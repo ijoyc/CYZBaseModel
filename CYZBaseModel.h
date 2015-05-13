@@ -18,6 +18,16 @@
 - (id)initWithDict:(NSDictionary *)aDict;
 
 /**
+ *  初始化方法，传入json字符串，根据json字符串中的键值关系为对象相应属性赋值
+ *  其映射关系可以在attributeMapDictionary中修改
+ *
+ *  @param json json字符串
+ *
+ *  @return 实例变量
+ */
+- (id)initWithJsonString:(NSString *)json;
+
+/**
  *子类需要重写的方法，用以创建映射字典。
  *在该方法中将属性名称作为key值，与初始化时传入字典的key同名的字符串作为value。
  *若不重写，则返回nil,此时默认映射字典的key=value=初始化时传入字典的key同名的字符串。
@@ -27,8 +37,6 @@
 
 /**
  *为实例变量赋以新的属性映射字典。
- *另外，如果传入字典的值有非基本类(例如自己定义的类)，需要重写该方法，
- *调用[super setAttributesDictionary:aDict]，然后将非基本类作为值为属性赋值
  *@param aDict a Dictionary 新的属性映射字典
  */
 - (void)setAttributesDictionary:(NSDictionary *)aDict;
