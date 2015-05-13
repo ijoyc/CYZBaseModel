@@ -8,7 +8,45 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CYZBaseModel : NSObject
+@interface CYZBaseModel : NSObject <NSCoding>
+
+/**
+ *  哪个子类调用，就返回哪个子类的对象数组，根据传入的包含对象字典的数组来为每个对象赋值
+ *  特定属性名称的映射关系可以通过attributeMapDictionary方法指定。
+ *
+ *  @param jsonArray 对象字典的数组。格式：@[@{name = ..., passwd = ...}, @{...}, ...]
+ *
+ *  @return 调用类的实例变量的数组。
+ */
++ (NSArray *)objectArrayWithJsonArray:(NSArray *)jsonArray;
+
+/**
+ *  哪个子类调用，就返回哪个子类的对象数组。根据传入的json字符串（数组型）为每个对象赋值。
+ *  特定属性名称的映射关系可以通过attributeMapDictionary方法指定。
+ *
+ *  @param jsonString json字符串
+ *
+ *  @return 调用类的实例变量的数组。
+ */
++ (NSArray *)objectArrayWithJsonString:(NSString *)jsonString;
+
+/**
+ *  哪个类调用，就返回哪个类的对象数组对应的json数组。
+ *
+ *  @param objectArray 对象数组
+ *
+ *  @return json数组
+ */
++ (NSArray *)jsonArrayWithObjectArray:(NSArray *)objectArray;
+
+/**
+ *  哪个类调用，就返回哪个类对象数组对应的json字符串。
+ *
+ *  @param objectArray 对象数组
+ *
+ *  @return json字符串
+ */
++ (NSString *)jsonStringWithObjectArray:(NSArray *)objectArray;
 
 /**
  *初始化方法，将传入字典的key对应的value赋值给Model对象中相应地属性。
@@ -34,6 +72,18 @@
  *@return 返回一个映射字典,或者nil(如果子类不重写)
  */
 - (NSDictionary *)attributeMapDictionary;
+
+/**
+ *  子类需要重写的方法，用与字典中包含数组，并且数组中包含自定义对象时。
+ *  如果不重写该方法，则创建的对象中数组类型的属性为空。
+ *  自定义对象写自定义对象的类名
+ *  字符串写@“NSString”
+ *  数值型一律写成@“NSNumber”
+ *  格式：@{"mapped-property-name": @"NSString"}
+ *
+ *  @return 映射字典
+ */
+- (NSDictionary *)objectClassesInArray;
 
 /**
  *为实例变量赋以新的属性映射字典。
