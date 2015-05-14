@@ -33,7 +33,6 @@
 		650291471B02293B0037FB4C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6502914F1B0229640037FB4C /* CYZBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CYZBaseModel.h; sourceTree = "<group>"; };
 		650291501B0229640037FB4C /* CYZBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CYZBaseModel.m; sourceTree = "<group>"; };
-		650291511B0229640037FB4C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		650291531B022AD30037FB4C /* Weibo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Weibo.h; sourceTree = "<group>"; };
 		650291541B022AD30037FB4C /* Weibo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Weibo.m; sourceTree = "<group>"; };
 		650291561B022AD90037FB4C /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -97,7 +96,6 @@
 			children = (
 				6502914F1B0229640037FB4C /* CYZBaseModel.h */,
 				650291501B0229640037FB4C /* CYZBaseModel.m */,
-				650291511B0229640037FB4C /* README.md */,
 			);
 			path = CYZBaseModel;
 			sourceTree = "<group>";

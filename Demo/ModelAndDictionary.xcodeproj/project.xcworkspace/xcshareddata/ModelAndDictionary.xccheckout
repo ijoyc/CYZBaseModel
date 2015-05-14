@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>421DE893-4B09-478C-BBD7-6BB0129ACBEF</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ModelAndDictionary</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>326540730065AC7DBCD9B6E67DA57D4BF5F7D189</key>
+		<string>https://github.com/YiZhuoChen/CYZBaseModel.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Demo/ModelAndDictionary.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>326540730065AC7DBCD9B6E67DA57D4BF5F7D189</key>
+		<string>../../..Demo/ModelAndDictionary/CYZBaseModel/</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/YiZhuoChen/CYZBaseModel.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>326540730065AC7DBCD9B6E67DA57D4BF5F7D189</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>326540730065AC7DBCD9B6E67DA57D4BF5F7D189</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CYZBaseModel</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>326540730065AC7DBCD9B6E67DA57D4BF5F7D189</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CYZBaseModel</string>
+		</dict>
+	</array>
+</dict>
+</plist>
