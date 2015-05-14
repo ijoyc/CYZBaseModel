@@ -104,16 +104,15 @@
             
             if ([self respondsToSelector:setter]) {
                 
-                NSMethodSignature* methodSig = [self methodSignatureForSelector:setter];
-                const char* retType = [methodSig methodReturnType];
+                NSMethodSignature* signature = [self methodSignatureForSelector:setter];
+                const char *returnType = [signature getArgumentTypeAtIndex:2];
                 
-                if (strcmp(retType, @encode(id)) == 0) {
+                if (strcmp(returnType, @encode(id)) == 0) {
                     [self performSelectorOnMainThread:setter withObject:[aDecoder decodeObjectForKey:key] waitUntilDone:[NSThread isMainThread]];
                 } else {
                     NSString *type = [self propertyTypeForProperty:properties[i]];
                     
                     //调用method，传递基本类型的方法：使用NSInvocation。
-                    NSMethodSignature *signature = [self methodSignatureForSelector:setter];
                     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
                     invocation.selector = setter;
                     invocation.target = self;
@@ -151,9 +150,9 @@
         if ([self respondsToSelector:getter]) {
             
             NSMethodSignature* methodSig = [self methodSignatureForSelector:getter];
-            const char* retType = [methodSig methodReturnType];
+            const char *returnType = [methodSig methodReturnType];
             
-            if (strcmp(retType, @encode(id)) == 0) {
+            if (strcmp(returnType, @encode(id)) == 0) {
                 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
@@ -351,6 +350,19 @@
     return dict;
 }
 
+- (NSString *)jsonStringRepresentation {
+    NSDictionary *representation = [self dictionaryRepresentation];
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:representation options:NSJSONWritingPrettyPrinted error:&error];
+    
+    if (error) {
+        NSLog(@"Error occured when create json string representation, error: %@", error.localizedDescription);
+    }
+    
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    return jsonString;
+}
+
 #pragma mark - Private Methods
 
 - (NSDictionary *)keyValuesForMapDictionary:(NSDictionary *)aDict {
@@ -366,11 +378,6 @@
     for (NSString *key in aDict) {
         //如果当期的映射字典中含有该键值，说明子类已经为该属性建立了映射关系了。
         if ([mapDictionary.allValues containsObject:key]) {
-            continue;
-        }
-        
-        //如果传入字典中有字典，说明这是跨级设值，这里忽略掉，在setAttributeDictionary方法中处理。
-        if ([aDict[key] isKindOfClass:[NSDictionary class]]) {
             continue;
         }
         

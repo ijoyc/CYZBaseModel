@@ -96,4 +96,9 @@
  */
 - (NSDictionary *)dictionaryRepresentation;
 
+/**
+ *  将自定义对象转换成json字符串
+ */
+- (NSString *)jsonStringRepresentation;
+
 @end
