@@ -12,7 +12,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"name = %@, userid = %@, address = %@, type = %d, dogs = %@", self.name, self.userID, self.address, self.type, self.dogs];
+    return [NSString stringWithFormat:@"name = %@, userid = %@, followedMe = %d, address = %@, type = %d, dogs = %@", self.name, self.userID, self.followedMe, self.address, self.type, self.dogs];
 }
 
 - (NSDictionary *)objectClassesInArray {

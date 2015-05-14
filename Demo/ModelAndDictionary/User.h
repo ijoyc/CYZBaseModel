@@ -20,6 +20,8 @@ typedef enum {
 
 @property (strong, nonatomic) NSString *userID;
 
+@property (assign, nonatomic) BOOL followedMe;
+
 @property (strong, nonatomic) NSString *address;
 
 @property (strong, nonatomic) NSArray *dogs;

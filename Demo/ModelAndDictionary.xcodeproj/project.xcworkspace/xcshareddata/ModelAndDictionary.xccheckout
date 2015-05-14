@@ -18,7 +18,7 @@
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>326540730065AC7DBCD9B6E67DA57D4BF5F7D189</key>
-		<string>../../..Demo/ModelAndDictionary/CYZBaseModel/</string>
+		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/YiZhuoChen/CYZBaseModel.git</string>

@@ -15,6 +15,7 @@
 void dictionaryToModel_normal() {
     NSDictionary *dictionary = @{@"name": @"xiaowang",
                                  @"userID": @"45",
+                                 @"followedMe": @YES,
                                  @"address": @"china",
                                  @"type": @(kUserTypeVIP)};
     User *userModel = [[User alloc] initWithDict:dictionary];
@@ -164,7 +165,7 @@ void encodeAndDecode() {
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
-        encodeAndDecode();
+        dictionaryToModel_normal();
         
     }
     
