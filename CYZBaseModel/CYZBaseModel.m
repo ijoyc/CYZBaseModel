@@ -124,10 +124,16 @@
                         int basicData = [aDecoder decodeIntForKey:key];
                         [invocation setArgument:&basicData atIndex:2];
                     } else if ([type isEqualToString:@"q"]) {
-                        long basicData = [aDecoder decodeIntegerForKey:key];
+                        long long basicData = [aDecoder decodeIntegerForKey:key];
                         [invocation setArgument:&basicData atIndex:2];
                     } else if ([type isEqualToString:@"f"]) {
                         float basicData = [aDecoder decodeFloatForKey:key];
+                        [invocation setArgument:&basicData atIndex:2];
+                    } else if ([type isEqualToString:@"c"]) {
+                        BOOL basicData = [aDecoder decodeBoolForKey:key];
+                        [invocation setArgument:&basicData atIndex:2];
+                    } else if ([type isEqualToString:@"l"]) {
+                        long basicData = [aDecoder decodeIntegerForKey:key];
                         [invocation setArgument:&basicData atIndex:2];
                     }
                     
@@ -185,6 +191,14 @@
                     float basicData = 0;
                     [invocation getReturnValue:&basicData];
                     [aCoder encodeFloat:basicData forKey:key];
+                } else if ([type isEqualToString:@"c"]) {
+                    BOOL basicData = NO;
+                    [invocation getReturnValue:&basicData];
+                    [aCoder encodeBool:basicData forKey:key];
+                } else if ([type isEqualToString:@"l"]) {
+                    long basicData = 0;
+                    [invocation getReturnValue:&basicData];
+                    [aCoder encodeInteger:basicData forKey:key];
                 }
             }
         }
@@ -201,6 +215,10 @@
 }
 
 - (NSDictionary *)objectClassesInArray {
+    return nil;
+}
+
+- (NSArray *)attributesWithoutConvertNull {
     return nil;
 }
 
@@ -292,10 +310,16 @@
                         int basicData = [aDictValue intValue];
                         [invocation setArgument:&basicData atIndex:2];
                     } else if ([type isEqualToString:@"q"]) {
-                        long basicData = [aDictValue longValue];
+                        long long basicData = [aDictValue longValue];
                         [invocation setArgument:&basicData atIndex:2];
                     } else if ([type isEqualToString:@"f"]) {
                         float basicData = [aDictValue floatValue];
+                        [invocation setArgument:&basicData atIndex:2];
+                    } else if ([type isEqualToString:@"c"]) {
+                        BOOL basicData = [aDictValue boolValue];
+                        [invocation setArgument:&basicData atIndex:2];
+                    } else if ([type isEqualToString:@"l"]) {
+                        long basicData = [aDictValue longValue];
                         [invocation setArgument:&basicData atIndex:2];
                     }
                     //第0和第1个参数分别是self和_cmd，由NSInvocation自动设置。
@@ -303,6 +327,16 @@
                     [invocation invoke];
                 }
                 
+            } else if ([aDictValue isKindOfClass:[NSNull class]]) {
+              //如果该属性是空值，那么根据子类需要选择是否将其转换为空串
+                NSArray *noConvertArray = [self attributesWithoutConvertNull];
+                //如果不包含在子类返回的数组中
+                if (![noConvertArray containsObject:attributeName]) {
+                    [self performSelectorOnMainThread:setter withObject:@"" waitUntilDone:[NSThread isMainThread]];
+                } else {
+                    //如果包含在该数组中，那么直接按字典值（NSNull）为其赋值
+                    [self performSelectorOnMainThread:setter withObject:aDictValue waitUntilDone:[NSThread isMainThread]];
+                }
             } else {
                 //如果该值是其他普通的类型，则为属性赋值
                 [self performSelectorOnMainThread:setter withObject:aDictValue waitUntilDone:[NSThread isMainThread]];

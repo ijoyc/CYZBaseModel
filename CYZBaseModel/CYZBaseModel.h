@@ -86,6 +86,14 @@
 - (NSDictionary *)objectClassesInArray;
 
 /**
+ *  默认情况下当遇到NSNull对象时会将其转换为@""空字符串
+ *  如果某些属性不需要这样的转换，可以将属性名字写在该方法返回的字典中
+ *
+ *  @return 不需要进行空值转换的属性名的数组
+ */
+- (NSArray *)attributesWithoutConvertNull;
+
+/**
  *为实例变量赋以新的属性映射字典。
  *@param aDict a Dictionary 新的属性映射字典
  */
