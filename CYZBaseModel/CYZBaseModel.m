@@ -129,7 +129,7 @@
                     } else if ([type isEqualToString:@"f"]) {
                         float basicData = [aDecoder decodeFloatForKey:key];
                         [invocation setArgument:&basicData atIndex:2];
-                    } else if ([type isEqualToString:@"c"]) {
+                    } else if ([type isEqualToString:@"c"] || [type isEqual:@"B"]) {
                         BOOL basicData = [aDecoder decodeBoolForKey:key];
                         [invocation setArgument:&basicData atIndex:2];
                     } else if ([type isEqualToString:@"l"]) {
@@ -191,7 +191,7 @@
                     float basicData = 0;
                     [invocation getReturnValue:&basicData];
                     [aCoder encodeFloat:basicData forKey:key];
-                } else if ([type isEqualToString:@"c"]) {
+                } else if ([type isEqualToString:@"c"] || [type isEqual:@"B"]) {
                     BOOL basicData = NO;
                     [invocation getReturnValue:&basicData];
                     [aCoder encodeBool:basicData forKey:key];
@@ -241,6 +241,10 @@
             
             //获取该属性的类型名，便于接下来分别处理。
             objc_property_t property = class_getProperty([self class], [attributeName cStringUsingEncoding:NSUTF8StringEncoding]);
+            if (property == NULL) {
+                continue;
+            }
+            
             NSString *type = [self propertyTypeForProperty:property];
             
             if ([aDictValue isKindOfClass:[NSDictionary class]]) {
@@ -269,15 +273,21 @@
                 if (objectClasses == nil) {
                     continue;
                 }
-            
+
                 NSString *classString = [objectClasses objectForKey:aDictKey];
                 if (classString) {
-                    for (NSDictionary *content in aDictValue) {
+                    for (id content in aDictValue) {
                         Class classInArray = NSClassFromString(classString);
                         //如果是该类的子类，说明能响应initWithDict:方法并且能建立映射字典。
                         if ([classInArray isSubclassOfClass:[CYZBaseModel class]]) {
                             id instance = [[classInArray alloc] initWithDict:content];
                             [valueArray addObject:instance];
+                        } else {
+                            //如果不是数组中包含的不是自定义对象（例如，NSString或NSNumber等），并且符合子类给出的映射字典中的映射规则，那么直接添加到最终数组中
+                            //这种做法可以解决一个数组中包含不同类型对象的情况（虽然基本上用不到）
+                            if ([content isKindOfClass:classInArray]) {
+                                [valueArray addObject:content];
+                            }
                         }
                     }
                 } else {
@@ -315,7 +325,7 @@
                     } else if ([type isEqualToString:@"f"]) {
                         float basicData = [aDictValue floatValue];
                         [invocation setArgument:&basicData atIndex:2];
-                    } else if ([type isEqualToString:@"c"]) {
+                    } else if ([type isEqualToString:@"c"] || [type isEqual:@"B"]) {
                         BOOL basicData = [aDictValue boolValue];
                         [invocation setArgument:&basicData atIndex:2];
                     } else if ([type isEqualToString:@"l"]) {
@@ -332,7 +342,8 @@
                 NSArray *noConvertArray = [self attributesWithoutConvertNull];
                 //如果不包含在子类返回的数组中
                 if (![noConvertArray containsObject:attributeName]) {
-                    [self performSelectorOnMainThread:setter withObject:@"" waitUntilDone:[NSThread isMainThread]];
+                    //根据字符串、数字、字典、数组来分别赋值
+                    [self handleNullValueForSetter:setter withType:type];
                 } else {
                     //如果包含在该数组中，那么直接按字典值（NSNull）为其赋值
                     [self performSelectorOnMainThread:setter withObject:aDictValue waitUntilDone:[NSThread isMainThread]];
@@ -385,7 +396,8 @@
 }
 
 - (NSString *)jsonStringRepresentation {
-    NSDictionary *representation = [self dictionaryRepresentation];
+    NSMutableDictionary *representation = [[self dictionaryRepresentation] mutableCopy];
+    
     NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:representation options:NSJSONWritingPrettyPrinted error:&error];
     
@@ -435,8 +447,8 @@
 
 - (id)parsePropertyValueWithValueDictionary:(NSDictionary *)aDict mappedKey:(NSString *)aDictKey {
     id aDictValue = nil;
-    
-    if ([aDictKey containsString:@"."]) {
+//    if ([aDictKey containsString:@"."]) {
+    if ([aDictKey rangeOfString:@"."].length != 0) {
         //如果映射字典的值中有.，说明字典中含有字典。
         
         NSDictionary *childDictionary = [aDict copy];
@@ -473,7 +485,8 @@
     type = [type componentsSeparatedByString:@","].firstObject;  //ie.T@"NSString" or Ti
     
     //如果包含@说明是对象类型(id 为@)
-    if ([type containsString:@"@"]) {
+//    if ([type containsString:@"@"]) {
+    if ([type rangeOfString:@"@"].length != 0) {
         type = [self propertyTypeForObject:type];
     } else {
         type = [self propertyTypeForBasicDataType:type];
@@ -499,5 +512,95 @@
     return type;
 }
 
+//处理默认情况下的NSNull对象
+- (void)handleNullValueForSetter:(SEL)setter withType:(NSString *)type {
+    if ([type isEqualToString:@"NSString"]) {
+        [self performSelectorOnMainThread:setter withObject:@"" waitUntilDone:[NSThread isMainThread]];
+    } else if ([type isEqualToString:@"NSArray"]) {
+        [self performSelectorOnMainThread:setter withObject:[NSArray array] waitUntilDone:[NSThread isMainThread]];
+    } else if ([type isEqualToString:@"NSNumber"]) {
+        [self performSelectorOnMainThread:setter withObject:@0 waitUntilDone:[NSThread isMainThread]];
+    } else if ([type isEqualToString:@"NSDictionary"]) {
+        [self performSelectorOnMainThread:setter withObject:[NSDictionary dictionary] waitUntilDone:[NSThread isMainThread]];
+    } else {
+        //其他类型
+        [self performSelectorOnMainThread:setter withObject:[NSNull null] waitUntilDone:[NSThread isMainThread]];
+    }
+}
+
+
+- (NSString *)description
+{
+//    static NSMutableArray *levels = nil;
+//    if (levels == nil) {
+//        levels = [NSMutableArray array];
+//    }
+//    
+//    if ([levels containsObject:[self class]] == NO) {
+//        [levels addObject:[self class]];
+//    }
+    
+    
+    // current indent level
+    static int level = 1;
+    
+    unsigned int count;
+    objc_property_t *propList = class_copyPropertyList([self class], &count);
+    NSMutableString *propPrint = [NSMutableString string];
+    
+    // Now see if we need to map any superclasses as well.
+    Class superClass = class_getSuperclass( [self class] );
+    if (superClass != nil && ! [superClass isEqual:[NSObject class]]) {
+        NSString *superString = [super description];
+        [propPrint appendString:superString];
+    }
+
+    // --------- begin printing --------
+    [propPrint appendString:@" {\r"];
+    for (int i = 0; i < count; i++) {
+        objc_property_t property = propList[i];
+        
+        const char *propName = property_getName(property);
+        NSString *propNameString =[NSString stringWithCString:propName encoding:NSASCIIStringEncoding];
+        
+        if(propName)
+        {
+            id value = [self valueForKey:propNameString];
+//            for (int i = 0; i <= [levels indexOfObject:[self class]]; i++) {
+//                [propPrint appendString:@"   "];
+//            }
+            
+            // fill blanks
+            for (int j = 0; j < level; j++) {
+                [propPrint appendString:@"   "];
+            }
+            
+            // increase indent level if this value is kind of array.
+            if ([value isKindOfClass:[NSArray class]]) {
+                level++;
+            }
+            [propPrint appendString:[NSString stringWithFormat:@"%@=%@ ;\r", propNameString, value]];
+            // decrease to original level for next printing
+            if ([value isKindOfClass:[NSArray class]]) {
+                level--;
+            }
+        }
+    }
+    
+//    for (int i = 0; i < [levels indexOfObject:[self class]]; i++) {
+//        [propPrint appendString:@"   "];
+//    }
+    
+    for (int i = 0; i < level - 1; i++) {
+        [propPrint appendString:@"   "];
+    }
+    [propPrint appendString:@"}"];
+    
+    free(propList);
+    
+    [propPrint replaceOccurrencesOfString:@"\n" withString:@"\r" options:NSCaseInsensitiveSearch range:NSMakeRange(0, propPrint.length)];
+    
+    return propPrint;
+}
 
 @end
