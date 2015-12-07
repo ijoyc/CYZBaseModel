@@ -21,9 +21,5 @@
              };
 }
 
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"id = %@, desc = %@, oldname = %@, nowname = %@, namechangedtime = %@, bag = %@", self.ID, self.desc, self.oldName, self.nowName, self.nameChangedTime, self.bag];
-}
 
 @end

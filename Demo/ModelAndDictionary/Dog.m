@@ -10,9 +10,4 @@
 
 @implementation Dog
 
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"name = %@, favour = %@", self.name, self.favour];
-}
-
 @end

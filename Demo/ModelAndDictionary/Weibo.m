@@ -23,9 +23,5 @@
     _numberWeiboID = numberWeiboID;
 }
 
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"name = %@, weiboid = %d, numberWeiboID = %@, time = %@, user = %@, userDictionary = %@", self.name, self.weiboID, self.numberWeiboID, self.time, self.user, self.userDictionary];
-}
 
 @end

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "326540730065AC7DBCD9B6E67DA57D4BF5F7D189+++3619610",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "326540730065AC7DBCD9B6E67DA57D4BF5F7D189+++E2E3B81" : 0,
+    "326540730065AC7DBCD9B6E67DA57D4BF5F7D189+++3619610" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "421DE893-4B09-478C-BBD7-6BB0129ACBEF",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "326540730065AC7DBCD9B6E67DA57D4BF5F7D189+++E2E3B81" : "CYZBaseModel",
+    "326540730065AC7DBCD9B6E67DA57D4BF5F7D189+++3619610" : "CYZBaseModel"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ModelAndDictionary",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Demo\/ModelAndDictionary.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/YiZhuoChen\/CYZBaseModel.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "326540730065AC7DBCD9B6E67DA57D4BF5F7D189+++3619610"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/YiZhuoChen\/CYZBaseModel.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "326540730065AC7DBCD9B6E67DA57D4BF5F7D189+++E2E3B81"
+    }
+  ]
+}

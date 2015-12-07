@@ -14,18 +14,10 @@
     _price = price;
 }
 
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"name = %@, price = %f, t = %@", self.name, self.price, self.t];
-}
+
 
 @end
 
 @implementation Test
-
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"name = %@", self.name];
-}
 
 @end

@@ -410,3 +410,43 @@ NSLog(@"%@", unarchivedBag);
 name = bag2, price = 3.300000, t = (null)
 
 ```
+
+### Automatically convert NSNull to proper value
+
+If server gives you a nil object, in OC you will get a NSNull instance. However you may always want to convert it to its original type with a proper empty value. By using `CYZBaseModel` you can free your day from converting. So any code likes these:
+```
+if (aDict[@"buildingPortrait"] == [NSNull null]) {
+    self.buildingPortrait = @"";
+}
+if (aDict[@"openingTime"] == [NSNull null]) {
+    self.openingTime = @"";
+}
+if (aDict[@"purchaseNote"] == [NSNull null]) {
+    self.purchaseNote = @"";
+}
+if (aDict[@"videoLink"] == [NSNull null]) {
+    self.videoLink = @"";
+}
+```
+can be deleted :]
+`CYZBaseModel` will consider the type of given key and do these mapping:
+    `NSString` ~> `@""`,
+    `NSArray` ~> `[NSArray array]`,
+    `NSDictionary` ~> `[NSDictionary dictionary]`,
+    `NSNumber` ~> `@0`,
+    other ~> `[NSNull null]`
+
+UNLESS you override `- (NSArray *)attributesWithoutConvertNull;` to tell `CYZBasemodel`: "Hi guy, these value should not be converted!".
+
+### Pretty NSLog
+
+In short, you can use `NSLog(@"%@", myObject)` to print all of the world :].
+
+
+
+
+
+
+
+
+

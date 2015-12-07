@@ -10,13 +10,4 @@
 
 @implementation User
 
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"name = %@, userid = %@, followedMe = %d, address = %@, type = %d, dogs = %@", self.name, self.userID, self.followedMe, self.address, self.type, self.dogs];
-}
-
-- (NSDictionary *)objectClassesInArray {
-    return @{@"dogs": @"Dog"};
-}
-
 @end
